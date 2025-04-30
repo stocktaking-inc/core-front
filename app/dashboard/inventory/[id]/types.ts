@@ -1,0 +1,3 @@
+interface IInventoryDetailPage {
+  id: string
+}
