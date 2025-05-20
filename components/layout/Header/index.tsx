@@ -3,9 +3,10 @@ import Link from 'next/link'
 import { Package2 } from 'lucide-react'
 
 import { ThemeToggle } from '@/components/theme-toggle'
-
 import { MobileMenu } from '@/components/mobile-menu'
 import { Button } from '@/components/ui/button'
+
+import { routes } from '@/utils/shared/api/routes'
 
 export const Header = ({ navLinks }: { navLinks: { href: string; label: string }[] }) => {
   return (
@@ -30,7 +31,7 @@ export const Header = ({ navLinks }: { navLinks: { href: string; label: string }
         <ThemeToggle />
         <div className='hidden items-center gap-4 md:flex'>
           <a
-            href='https://stocktaking-auth.vercel.app/login'
+            href={routes.LOGIN}
             className='text-sm font-medium text-muted-foreground hover:text-primary'
           >
             Войти
@@ -39,7 +40,7 @@ export const Header = ({ navLinks }: { navLinks: { href: string; label: string }
             asChild
             size='sm'
           >
-            <a href='https://stocktaking-auth.vercel.app/register'>Регистрация</a>
+            <a href={routes.REGISTER}>Регистрация</a>
           </Button>
         </div>
       </div>
