@@ -1,3 +1,4 @@
+import { routes } from '@/utils/shared/api/routes'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
@@ -57,7 +58,7 @@ export async function middleware(req: NextRequest) {
   }
 
   // Всё плохо → редирект на /login
-  const loginUrl = new URL('/login', req.url)
+  const loginUrl = new URL(routes.LOGIN, req.url)
   return NextResponse.redirect(loginUrl)
 }
 
