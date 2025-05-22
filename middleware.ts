@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL || 'http://localhost:5100'
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL ?? 'http://localhost:5100'
 
 export async function middleware(req: NextRequest) {
   const { pathname, searchParams } = req.nextUrl
 
   const publicPaths = ['/', '/login', '/register', '/favicon.ico']
   const isPublic =
-    publicPaths.includes(pathname) || pathname.startsWith('/_next') || pathname.startsWith('/api')
+    publicPaths.includes(pathname) ?? pathname.startsWith('/_next') ?? pathname.startsWith('/api')
 
   if (isPublic) return NextResponse.next()
 
@@ -19,7 +19,6 @@ export async function middleware(req: NextRequest) {
   cleanUrl.searchParams.delete('accessToken')
   cleanUrl.searchParams.delete('refreshToken')
 
-  // Попытка верификации accessToken
   if (accessToken) {
     const isValid = await verifyAccessToken(accessToken)
     if (isValid) {
@@ -31,7 +30,6 @@ export async function middleware(req: NextRequest) {
       return res
     }
 
-    // Попытка refresh
     if (refreshToken) {
       const refreshResult = await fetch(`${BACKEND_URL}/api/auth/refresh`, {
         method: 'POST',
