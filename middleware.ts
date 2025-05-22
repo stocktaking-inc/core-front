@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server'
+import { routes } from '@/utils/shared/api/routes'
 import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL ?? 'http://localhost:5100'
 
@@ -55,7 +56,7 @@ export async function middleware(req: NextRequest) {
   }
 
   // Всё плохо → редирект на /login
-  const loginUrl = new URL('/login', req.url)
+  const loginUrl = new URL(routes.LOGIN, req.url)
   return NextResponse.redirect(loginUrl)
 }
 
