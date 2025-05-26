@@ -1,7 +1,6 @@
 * text=auto
 
 *.json               text diff=json
-*.toml               text
 *.yaml               text eol=lf diff linguist-detectable=true
 *.yml                text eol=lf diff linguist-detectable=true
 
@@ -35,4 +34,4 @@
 
 *.css                text diff=css
 
-Dockerfile           text
+Dockerfile           text eol=lf
