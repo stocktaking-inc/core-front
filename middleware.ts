@@ -1,58 +1,74 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { cookies } from 'next/headers'
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
 
-  // TODO: /main
-  if (path === '/main') {
+
+  if (
+    path === '/' ||
+    path === '/main' ||
+    path === '/main/' ||
+    path.startsWith('/auth') ||
+    path.startsWith('/_next') ||
+    path.includes('favicon.ico')
+  ) {
     return NextResponse.next()
   }
 
-  const cookieStore = await cookies()
-  const accessToken = cookieStore.get('AccessToken')?.value
-  const refreshToken = cookieStore.get('RefreshToken')?.value
-  console.log('Cookies:', {
-    accessToken: request.cookies.get('AccessToken')?.value,
-    refreshToken: request.cookies.get('RefreshToken')?.value,
-    allCookies: request.cookies.getAll()
-  })
+  const accessToken = request.cookies.get('AccessToken')?.value
+  const refreshToken = request.cookies.get('RefreshToken')?.value
+
   if (!accessToken || !refreshToken) {
-    // TODO: /main
-    return NextResponse.redirect(new URL('/main', request.url))
+    const loginUrl = new URL('/auth/login', request.url)
+    return NextResponse.redirect(loginUrl)
+  }
+
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL
+  if (!backendUrl) {
+    console.error('NEXT_PUBLIC_BACKEND_API_URL is not defined in .env')
   }
 
   try {
-    const verifyResponse = await fetch(`${process.env.BACKEND_URL}/api/auth/verify`, {
+    const verifyResponse = await fetch(`${backendUrl}/api/auth/verify`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+
+    if (verifyResponse.ok) {
+      console.log('Verify successful, proceeding')
+      return NextResponse.next()
+    }
+
+    const refreshResponse = await fetch(`${backendUrl}/api/auth/refresh`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`
       },
-      body: JSON.stringify({ "refreshToken": refreshToken })
+      credentials: 'include',
     })
 
-    if (!verifyResponse.ok) {
-      throw new Error('Token verification failed')
+    const setCookieHeader = refreshResponse.headers.get('set-cookie')
+    if (setCookieHeader) {
+      console.log('AccessToken updated via Set-Cookie')
+      const response = NextResponse.next()
+      response.headers.set('set-cookie', setCookieHeader)
+      return response
+    } else {
+      console.warn('No Set-Cookie header in refresh response, redirecting to login')
     }
-
-    return NextResponse.next()
-  } catch (error) {
-    // TODO: /main
-    return NextResponse.redirect(new URL('/main', request.url))
+  } catch (error: any) {
+    console.error('Middleware fetch error:', {
+      message: error.message,
+      stack: error.stack,
+    })
   }
 }
 
 export const config = {
   matcher: [
-    /*
-     * Исключаем:
-     * - API routes
-     * - Статические файлы (_next/static)
-     * - Главную страницу (/main)
-     */
-    // TODO: /main
-    '/((?!api|_next/static|_next/image|favicon.ico|/main).*)'
-  ]
+    '/((?!$|auth|_next|favicon|main.*).*)',
+  ],
 }
