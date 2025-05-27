@@ -1,79 +1,58 @@
-import { routes } from '@/utils/shared/api/routes'
-import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { cookies } from 'next/headers'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL ?? 'http://localhost:5100'
+export async function middleware(request: NextRequest) {
+  const path = request.nextUrl.pathname
 
-export async function middleware(req: NextRequest) {
-  const { pathname, searchParams } = req.nextUrl
-
-  const publicPaths = ['/', '/login', '/register', '/favicon.ico']
-  const isPublic =
-    publicPaths.includes(pathname) ?? pathname.startsWith('/_next') ?? pathname.startsWith('/api')
-
-  if (isPublic) return NextResponse.next()
-
-  const accessToken = searchParams.get('accessToken')
-  const refreshToken = searchParams.get('refreshToken')
-
-  const cleanUrl = req.nextUrl.clone()
-  cleanUrl.searchParams.delete('accessToken')
-  cleanUrl.searchParams.delete('refreshToken')
-
-  if (accessToken) {
-    const isValid = await verifyAccessToken(accessToken)
-    if (isValid) {
-      const res = NextResponse.redirect(cleanUrl)
-      res.cookies.set('AccessToken', accessToken, { httpOnly: true, path: '/' })
-      if (refreshToken) {
-        res.cookies.set('RefreshToken', refreshToken, { httpOnly: true, path: '/' })
-      }
-      return res
-    }
-
-    if (refreshToken) {
-      const refreshResult = await fetch(`${BACKEND_URL}/api/auth/refresh`, {
-        method: 'POST',
-        headers: {
-          cookie: `AccessToken=${accessToken}; RefreshToken=${refreshToken}`
-        }
-      })
-
-      if (refreshResult.ok) {
-        const { AccessToken, RefreshToken } = await refreshResult.json()
-        const res = NextResponse.redirect(cleanUrl)
-        res.cookies.set('AccessToken', AccessToken, { httpOnly: true, path: '/' })
-        res.cookies.set('RefreshToken', RefreshToken, { httpOnly: true, path: '/' })
-        return res
-      }
-    }
+  // TODO: /main
+  if (path === '/main') {
+    return NextResponse.next()
   }
 
-  const cookieAccessToken = req.cookies.get('AccessToken')?.value
-  if (cookieAccessToken) {
-    const isValid = await verifyAccessToken(cookieAccessToken)
-    if (isValid) return NextResponse.next()
+  const cookieStore = await cookies()
+  const accessToken = cookieStore.get('AccessToken')?.value
+  const refreshToken = cookieStore.get('RefreshToken')?.value
+  console.log('Cookies:', {
+    accessToken: request.cookies.get('AccessToken')?.value,
+    refreshToken: request.cookies.get('RefreshToken')?.value,
+    allCookies: request.cookies.getAll()
+  })
+  if (!accessToken || !refreshToken) {
+    // TODO: /main
+    return NextResponse.redirect(new URL('/main', request.url))
   }
 
-  // Всё плохо → редирект на /login
-  const loginUrl = new URL(routes.LOGIN, req.url)
-  return NextResponse.redirect(loginUrl)
-}
-
-async function verifyAccessToken(token: string): Promise<boolean> {
   try {
-    const res = await fetch(`${BACKEND_URL}/api/auth/verify`, {
-      method: 'GET',
+    const verifyResponse = await fetch(`${process.env.BACKEND_URL}/api/auth/verify`, {
+      method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({ "refreshToken": refreshToken })
     })
-    return res.ok
-  } catch {
-    return false
+
+    if (!verifyResponse.ok) {
+      throw new Error('Token verification failed')
+    }
+
+    return NextResponse.next()
+  } catch (error) {
+    // TODO: /main
+    return NextResponse.redirect(new URL('/main', request.url))
   }
 }
 
 export const config = {
-  matcher: ['/((?!_next|api|favicon.ico).*)']
+  matcher: [
+    /*
+     * Исключаем:
+     * - API routes
+     * - Статические файлы (_next/static)
+     * - Главную страницу (/main)
+     */
+    // TODO: /main
+    '/((?!api|_next/static|_next/image|favicon.ico|/main).*)'
+  ]
 }
