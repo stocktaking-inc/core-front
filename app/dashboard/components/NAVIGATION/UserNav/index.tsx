@@ -21,7 +21,6 @@ export const UserNav = () => {
   return (
     <div className='flex items-center gap-4'>
       <ThemeToggle />
-
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button

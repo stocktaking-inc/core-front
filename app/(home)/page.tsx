@@ -9,14 +9,9 @@ import {
   TestimonialsSection
 } from './sections'
 
-export default function Home() {
-  const navLinks = [
-    { href: '/#features', label: 'Возможности' },
-    { href: '/#pricing', label: 'Тарифы' },
-    { href: '/#reviews', label: 'Отзывы' },
-    { href: '/#start', label: 'Попробовать' }
-  ]
+import {navLinks} from './constants'
 
+export default function Home() {
   return (
     <>
       <Header navLinks={navLinks} />

@@ -14,7 +14,6 @@ const nextConfig = {
   output: 'standalone',
   compress: true,
   productionBrowserSourceMaps: false,
-  swcMinify: true,
   experimental: {
     optimizePackageImports: ['@radix-ui/react-*', 'lucide-react']
   }
