@@ -4,11 +4,8 @@ import type { NextRequest } from 'next/server'
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
 
-
   if (
     path === '/' ||
-    path === '/main' ||
-    path === '/main/' ||
     path.startsWith('/auth') ||
     path.startsWith('/_next') ||
     path.includes('favicon.ico')
@@ -33,8 +30,8 @@ export async function middleware(request: NextRequest) {
     const verifyResponse = await fetch(`${backendUrl}/api/auth/verify`, {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+        Authorization: `Bearer ${accessToken}`
+      }
     })
 
     if (verifyResponse.ok) {
@@ -45,9 +42,9 @@ export async function middleware(request: NextRequest) {
     const refreshResponse = await fetch(`${backendUrl}/api/auth/refresh`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      credentials: 'include',
+      credentials: 'include'
     })
 
     const setCookieHeader = refreshResponse.headers.get('set-cookie')
@@ -62,13 +59,11 @@ export async function middleware(request: NextRequest) {
   } catch (error: any) {
     console.error('Middleware fetch error:', {
       message: error.message,
-      stack: error.stack,
+      stack: error.stack
     })
   }
 }
 
 export const config = {
-  matcher: [
-    '/((?!$|auth|_next|favicon|main.*).*)',
-  ],
+  matcher: ['/((?!$|auth|_next|favicon|main.*).*)']
 }

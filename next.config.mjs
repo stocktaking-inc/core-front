@@ -17,8 +17,6 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['@radix-ui/react-*', 'lucide-react']
   },
-  // TODO: /main
-  assetPrefix: '/main/',
   trailingSlash: false
 }
 
