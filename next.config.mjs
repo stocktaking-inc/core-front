@@ -16,7 +16,9 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   experimental: {
     optimizePackageImports: ['@radix-ui/react-*', 'lucide-react']
-  }
+  },
+  assetPrefix: '/main/',
+  trailingSlash: false,
 }
 
 export default nextConfig

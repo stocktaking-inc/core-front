@@ -9,7 +9,7 @@ import {
   TestimonialsSection
 } from './sections'
 
-import {navLinks} from './constants'
+import { navLinks } from './constants'
 
 export default function Home() {
   return (
