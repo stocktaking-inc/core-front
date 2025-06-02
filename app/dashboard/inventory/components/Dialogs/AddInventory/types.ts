@@ -1,3 +1,3 @@
 interface IAddInventoryDialog {
-  onAddItemAction: (newItem: Omit<InventoryItem, 'id' | 'status'>) => Promise<void>;
+  onAddItemAction: (newItem: Omit<InventoryItem, 'id' | 'status'>) => Promise<void>
 }

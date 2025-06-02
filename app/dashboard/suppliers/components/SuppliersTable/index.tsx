@@ -30,7 +30,7 @@ import { toast } from 'sonner'
 import { ISupplier } from '../types'
 
 import { EditDialog, ProductDialog, ViewDetailsDialog } from '../Dialogs'
-import {DeleteConfirmDialog} from '@/components/Dialogs/DeleteConfirm'
+import { DeleteConfirmDialog } from '@/components/Dialogs/DeleteConfirm'
 import { initialSuppliers } from './mock'
 
 const getStatusText = (status: string) => {

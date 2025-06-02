@@ -32,12 +32,11 @@ import { DeleteConfirmDialog } from '@/components/Dialogs/DeleteConfirm'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { getStatusBadge } from '@/utils/Badges'
 
-
 export const InventoryTable = ({
-                                 items,
-                                 onDeleteItemAction,
-                                 onEditItemAction
-                               }: IInventoryTable) => {
+  items,
+  onDeleteItemAction,
+  onEditItemAction
+}: IInventoryTable) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
@@ -103,14 +102,20 @@ export const InventoryTable = ({
               <div className='text-center py-8 text-muted-foreground'>Результаты не найдены.</div>
             ) : (
               filteredItems.map(item => (
-                <Card key={item.id} className='overflow-hidden'>
+                <Card
+                  key={item.id}
+                  className='overflow-hidden'
+                >
                   <CardContent className='p-0'>
                     <div className='p-4 border-b bg-muted/30'>
                       <div className='flex justify-between items-center'>
                         <h3 className='font-medium'>{item.name}</h3>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant='ghost' className='h-8 w-8 p-0'>
+                            <Button
+                              variant='ghost'
+                              className='h-8 w-8 p-0'
+                            >
                               <span className='sr-only'>Открыть меню</span>
                               <MoreHorizontal className='h-4 w-4' />
                             </Button>

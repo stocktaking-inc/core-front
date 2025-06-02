@@ -10,7 +10,7 @@ import { DashboardHeader } from '../../components/DashboardHeader'
 import { DashboardShell } from '../../components/Shell'
 import { ProductAnalytics } from '../components/ProductAnalytics'
 
-import {item} from './mock'
+import { item } from './mock'
 
 export default function InventoryDetailPage() {
   return (

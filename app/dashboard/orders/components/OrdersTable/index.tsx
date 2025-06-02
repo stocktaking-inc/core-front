@@ -33,7 +33,7 @@ import { OrderType } from '../types'
 
 import { initialOrders } from './mock'
 
-import {getStatusColor, getStatusText} from './utils'
+import { getStatusColor, getStatusText } from './utils'
 
 export const OrdersTable = () => {
   const [searchQuery, setSearchQuery] = useState('')

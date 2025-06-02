@@ -38,7 +38,7 @@ export const AddOrderDialog = ({ onAddOrder }: AddOrderDialogProps) => {
 
     if (isNaN(total) || total < 0 || isNaN(items) || items < 0) {
       toast.warning('Ошибка', {
-        description: 'Пожалуйста, введите корректные значения для суммы и количества товаров.',
+        description: 'Пожалуйста, введите корректные значения для суммы и количества товаров.'
       })
       setIsLoading(false)
       return

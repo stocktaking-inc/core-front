@@ -39,7 +39,6 @@ const routes = [
 export const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
 
-
   return (
     <Sheet
       open={isOpen}

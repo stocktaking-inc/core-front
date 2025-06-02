@@ -1,2 +1,2 @@
-export {AddInventoryDialog} from './AddInventory'
-export {EditInventoryDialog} from './EditInventory'
+export { AddInventoryDialog } from './AddInventory'
+export { EditInventoryDialog } from './EditInventory'

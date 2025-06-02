@@ -20,9 +20,7 @@ export const DeleteConfirmDialog = (props: IDeleteConfirmDialog) => {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Вы уверены?</AlertDialogTitle>
-          <AlertDialogDescription>
-            Это действие нельзя отменить.
-          </AlertDialogDescription>
+          <AlertDialogDescription>Это действие нельзя отменить.</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={props.onClick}>Отмена</AlertDialogCancel>

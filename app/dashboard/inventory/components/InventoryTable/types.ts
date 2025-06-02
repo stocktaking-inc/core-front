@@ -4,8 +4,8 @@ interface InventoryItem {
   article: string
   category: string
   quantity: number
-  locationId: number | null,
-  status: 'In Stock' | 'Low Stock' | 'Out of Stock' | string,
+  locationId: number | null
+  status: 'In Stock' | 'Low Stock' | 'Out of Stock' | string
   supplierId: number
 }
 

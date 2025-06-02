@@ -1,5 +1,7 @@
-const BASE_AUTH_URL = process.env.NEXT_PUBLIC_FRONTEND_AUTH_URL ?? ''
-const BASE_POLICY_URL = process.env.NEXT_PUBLIC_FRONTEND_POLICY_URL ?? ''
+export const BASE_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL ?? ''
+
+export const BASE_AUTH_URL = process.env.NEXT_PUBLIC_FRONTEND_AUTH_URL ?? ''
+export const BASE_POLICY_URL = process.env.NEXT_PUBLIC_FRONTEND_POLICY_URL ?? ''
 
 export const routes = {
   LOGIN: `${BASE_AUTH_URL}/login`,
