@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import React, { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -9,133 +9,216 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { AddButton } from '@/app/dashboard/components/AddButton'
-import { toast } from '@/hooks/use-toast'
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { AddButton } from '@/app/dashboard/components/AddButton';
+import { toast } from 'sonner';
+import {ISupplier} from "@/app/dashboard/suppliers/components/types";
 
-interface AddInventoryDialogProps {
-  onAddItemAction: (item: InventoryItem) => void
+interface Warehouse {
+  id: number;
+  name: string;
+  address: string;
+  isActive: boolean;
 }
 
-export const getItemStatus = (quantity: number): string => {
-  if (quantity === 0) return 'Out of Stock'
-  if (quantity < 100) return 'Low Stock'
-  return 'In Stock'
-}
+export const AddInventoryDialog: React.FC<IAddInventoryDialog> = ({ onAddItemAction }) => {
+  const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+  const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
+  const [formData, setFormData] = useState<Omit<InventoryItem, 'id' | 'status'>>({
+    name: '',
+    article: '',
+    category: '',
+    quantity: 0,
+    locationId: null,
+    supplierId: 0,
+  });
 
-export const AddInventoryDialog = ({ onAddItemAction }: AddInventoryDialogProps) => {
-  const [open, setOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  useEffect(() => {
+    const fetchWarehouses = async () => {
+      try {
+        const response = await fetch('http://localhost:5101/api/warehouses', {
+          headers: { 'Accept': 'application/json' },
+        });
+        if (!response.ok) throw new Error('Ошибка загрузки складов');
+        const data: Warehouse[] = await response.json();
+        setWarehouses(data.filter(w => w.isActive));
+      } catch (err) {
+        toast.warning('Ошибка', {
+          description: 'Не удалось загрузить склады',
+        });
+      }
+    };
+
+    const fetchSuppliers = async () => {
+      try {
+        const response = await fetch('http://localhost:5101/api/suppliers', {
+          headers: { 'Accept': 'application/json' },
+        });
+        if (!response.ok) throw new Error('Ошибка загрузки поставщиков');
+        const data: ISupplier[] = await response.json();
+        setSuppliers(data);
+      } catch (err) {
+        toast.warning('Ошибка', {
+          description: 'Не удалось загрузить поставщиков',
+        });
+      }
+    };
+
+    fetchWarehouses();
+    fetchSuppliers();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
 
-    const formData = new FormData(e.currentTarget)
-    const quantity = Number(formData.get('quantity'))
-    const newItem: InventoryItem = {
-      id: Math.random().toString(36).substring(2, 9),
-      name: formData.get('name') as string,
-      sku: formData.get('sku') as string,
-      category: formData.get('category') as string,
-      quantity,
-      location: formData.get('location') as string,
-      status: getItemStatus(quantity) // Вычисляем статус
+    try {
+      await onAddItemAction(formData);
+      toast.success('Элемент добавлен', {
+        description: `Элемент ${formData.name} успешно добавлен.`,
+      });
+      setFormData({
+        name: '',
+        article: '',
+        category: '',
+        quantity: 0,
+        locationId: null,
+        supplierId: 0,
+      });
+      setOpen(false);
+    } catch (err) {
+      toast.warning('Ошибка', {
+        description: err instanceof Error ? err.message : 'Не удалось добавить элемент',
+      });
+    } finally {
+      setIsLoading(false);
     }
-
-    setTimeout(() => {
-      onAddItemAction(newItem)
-      toast({
-        title: 'Элемент добавлен',
-        description: `Элемент ${newItem.name} успешно добавлен.`
-      })
-      setIsLoading(false)
-      setOpen(false)
-    }, 1000)
-  }
+  };
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={setOpen}
-    >
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <AddButton label='Добавить товар' />
+        <AddButton label="Добавить товар" />
       </DialogTrigger>
-      <DialogContent className='sm:max-w-[425px]'>
+      <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Добавить товар</DialogTitle>
             <DialogDescription>Добавьте новый элемент в инвентарь.</DialogDescription>
           </DialogHeader>
-          <div className='grid gap-4 py-4'>
-            <div className='space-y-2'>
-              <Label htmlFor='name'>Название</Label>
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Название</Label>
               <Input
-                id='name'
-                name='name'
-                placeholder='Беспроводные наушники'
+                id="name"
+                name="name"
+                placeholder="Беспроводные наушники"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
               />
             </div>
-            <div className='space-y-2'>
-              <Label htmlFor='sku'>Артикул</Label>
+            <div className="space-y-2">
+              <Label htmlFor="article">Артикул</Label>
               <Input
-                id='sku'
-                name='sku'
-                placeholder='WH-1001'
+                id="article"
+                name="article"
+                placeholder="WH-1001"
+                value={formData.article}
+                onChange={(e) => setFormData({ ...formData, article: e.target.value })}
                 required
               />
             </div>
-            <div className='space-y-2'>
-              <Label htmlFor='category'>Категория</Label>
+            <div className="space-y-2">
+              <Label htmlFor="category">Категория</Label>
               <Input
-                id='category'
-                name='category'
-                placeholder='Электроника'
+                id="category"
+                name="category"
+                placeholder="Электроника"
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                 required
               />
             </div>
-            <div className='space-y-2'>
-              <Label htmlFor='quantity'>Количество</Label>
+            <div className="space-y-2">
+              <Label htmlFor="quantity">Количество</Label>
               <Input
-                id='quantity'
-                name='quantity'
-                type='number'
-                min='0'
+                id="quantity"
+                name="quantity"
+                type="number"
+                min="0"
+                value={formData.quantity}
+                onChange={(e) => setFormData({ ...formData, quantity: parseInt(e.target.value) || 0 })}
                 required
               />
             </div>
-            <div className='space-y-2'>
-              <Label htmlFor='location'>Местоположение</Label>
-              <Input
-                id='location'
-                name='location'
-                placeholder='Склад A'
+            <div className="space-y-2">
+              <Label htmlFor="locationId">Местоположение</Label>
+              <Select
+                name="locationId"
+                value={formData.locationId?.toString() || ''}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, locationId: value ? parseInt(value) : null })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Выберите склад" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="null">Нет склада</SelectItem>
+                  {warehouses.map((warehouse) => (
+                    <SelectItem key={warehouse.id} value={warehouse.id.toString()}>
+                      {warehouse.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="supplierId">Поставщик</Label>
+              <Select
+                name="supplierId"
+                value={formData.supplierId.toString()}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, supplierId: parseInt(value) })
+                }
                 required
-              />
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Выберите поставщика" />
+                </SelectTrigger>
+                <SelectContent>
+                  {suppliers.map((supplier) => (
+                    <SelectItem key={supplier.id} value={supplier.id.toString()}>
+                      {supplier.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <DialogFooter>
-            <Button
-              type='button'
-              variant='outline'
-              onClick={() => setOpen(false)}
-            >
+            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               Отмена
             </Button>
-            <Button
-              type='submit'
-              disabled={isLoading}
-            >
+            <Button type="submit" disabled={isLoading}>
               {isLoading ? 'Добавление...' : 'Добавить'}
             </Button>
           </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};

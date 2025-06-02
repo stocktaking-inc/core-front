@@ -16,7 +16,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-import { toast } from '@/hooks/use-toast'
+import { toast } from 'sonner'
 
 import { AddButton } from '../../../../components/AddButton'
 
@@ -47,8 +47,7 @@ export const AddSupplierDialog = ({ onAddSupplier }: IAddSupplierDialog) => {
       if (onAddSupplier) {
         onAddSupplier(newSupplier)
       }
-      toast({
-        title: 'Поставщик добавлен',
+      toast.success('Поставщик добавлен', {
         description: `Поставщик ${newSupplier.name} успешно добавлен.`
       })
       setIsLoading(false)

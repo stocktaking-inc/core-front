@@ -25,12 +25,12 @@ import {
   TableRow
 } from '@/components/ui/table'
 
-import { toast } from '@/hooks/use-toast'
+import { toast } from 'sonner'
 
 import { ISupplier } from '../types'
 
-import { DeleteConfirmDialog, EditDialog, ProductDialog, ViewDetailsDialog } from '../Dialogs'
-
+import { EditDialog, ProductDialog, ViewDetailsDialog } from '../Dialogs'
+import {DeleteConfirmDialog} from '@/components/Dialogs/DeleteConfirm'
 import { initialSuppliers } from './mock'
 
 const getStatusText = (status: string) => {
@@ -95,8 +95,7 @@ export const SuppliersTable = () => {
   const confirmDelete = () => {
     if (selectedSupplier) {
       setSuppliers(suppliers.filter(s => s.id !== selectedSupplier.id))
-      toast({
-        title: 'Поставщик удален',
+      toast.info('Поставщик удален', {
         description: `Поставщик ${selectedSupplier.name} был успешно удален`
       })
       setIsDeleteDialogOpen(false)
@@ -118,8 +117,7 @@ export const SuppliersTable = () => {
       }
 
       setSuppliers(suppliers.map(s => (s.id === selectedSupplier.id ? updatedSupplier : s)))
-      toast({
-        title: 'Поставщик обновлен',
+      toast.info('Поставщик обновлен', {
         description: `Информация о поставщике ${updatedSupplier.name} была успешно обновлена`
       })
       setIsEditDialogOpen(false)
@@ -174,7 +172,6 @@ export const SuppliersTable = () => {
                     <TableCell>{supplier.phone}</TableCell>
                     <TableCell>{supplier.category}</TableCell>
                     <TableCell>{supplier.productsCount}</TableCell>
-                    {/* Заменим код в TableCell для статуса */}
                     <TableCell>{getStatusBadge(supplier.status)}</TableCell>
                     <TableCell className='text-right'>
                       <DropdownMenu>

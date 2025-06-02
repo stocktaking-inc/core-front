@@ -8,36 +8,37 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { ThemeToggle } from '@/components/theme-toggle'
 
+const routes = [
+  {
+    href: '/features',
+    label: 'Возможности'
+  },
+  {
+    href: '/pricing',
+    label: 'Тарифы'
+  },
+  {
+    href: '/documentation',
+    label: 'Документация'
+  },
+  {
+    href: '/about',
+    label: 'О нас'
+  },
+  {
+    href: '/login',
+    label: 'Войти'
+  },
+  {
+    href: '/register',
+    label: 'Регистрация',
+    isButton: true
+  }
+]
+
 export const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const routes = [
-    {
-      href: '/features',
-      label: 'Возможности'
-    },
-    {
-      href: '/pricing',
-      label: 'Тарифы'
-    },
-    {
-      href: '/documentation',
-      label: 'Документация'
-    },
-    {
-      href: '/about',
-      label: 'О нас'
-    },
-    {
-      href: '/login',
-      label: 'Войти'
-    },
-    {
-      href: '/register',
-      label: 'Регистрация',
-      isButton: true
-    }
-  ]
 
   return (
     <Sheet

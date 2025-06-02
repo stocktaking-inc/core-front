@@ -2,7 +2,7 @@ import type React from 'react'
 
 import { DashboardNav, MainNav, UserNav } from './components/NAVIGATION'
 
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster } from '@/components/ui/sonner'
 
 export default function DashboardLayout({
   children

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
-import { toast } from '@/hooks/use-toast'
+import { toast } from 'sonner'
 
 import { initialNotifications, notificationLabels } from './constants'
 
@@ -35,8 +35,7 @@ export const NotificationSettings = () => {
       Object.assign(initialNotifications, notifications)
       setIsLoading(false)
       setHasChanges(false)
-      toast({
-        title: 'Настройки уведомлений обновлены',
+      toast.info('Настройки уведомлений обновлены', {
         description: 'Ваши настройки уведомлений были успешно сохранены.'
       })
     }, 1000)

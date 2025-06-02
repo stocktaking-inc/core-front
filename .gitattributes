@@ -14,10 +14,11 @@
 *.xml                text eol=lf diff linguist-detectable=true
 *.md                 linguist-detectable=true
 
-*.js                 text
-*.ts                 text diff=typescript
-*.jsx                text
-*.tsx                text diff=typescript
+*.js                 text eol=lf
+*.ts                 text eol=lf diff=typescript
+*.jsx                text eol=lf
+*.tsx                text eol=lf diff=typescript
+
 
 *.html               text
 *.xml                text eol=lf diff

@@ -30,10 +30,5 @@ export const NAV_ITEMS = [
     title: 'Отчеты',
     href: '/dashboard/reports',
     icon: BarChart3
-  },
-  {
-    title: 'Настройки',
-    href: '/dashboard/settings',
-    icon: Settings
   }
 ]

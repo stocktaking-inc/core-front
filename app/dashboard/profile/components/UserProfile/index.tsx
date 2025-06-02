@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 
-import { toast } from '@/hooks/use-toast'
+import { toast } from 'sonner'
 
 export const UserProfile = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -28,17 +28,14 @@ export const UserProfile = () => {
     if (id === 'phone') {
       let formattedPhone = value.replace(/\D/g, '')
 
-      // If starts with 8, replace with 7
       if (formattedPhone.startsWith('8')) {
         formattedPhone = '7' + formattedPhone.substring(1)
       }
 
-      // Add +7 prefix if not present
       if (formattedPhone && !formattedPhone.startsWith('7')) {
         formattedPhone = '7' + formattedPhone
       }
 
-      // Format with spaces and parentheses
       if (formattedPhone.length > 0) {
         formattedPhone = '+' + formattedPhone
 
@@ -71,8 +68,7 @@ export const UserProfile = () => {
 
     setTimeout(() => {
       setIsLoading(false)
-      toast({
-        title: 'Профиль обновлен',
+      toast.info('Профиль обновлен', {
         description: 'Ваши данные профиля были успешно обновлены.'
       })
     }, 1000)

@@ -27,11 +27,13 @@ import {
   TableRow
 } from '@/components/ui/table'
 
-import { toast } from '@/hooks/use-toast'
+import { toast } from 'sonner'
 
 import { OrderType } from '../types'
 
 import { initialOrders } from './mock'
+
+import {getStatusColor, getStatusText} from './utils'
 
 export const OrdersTable = () => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -47,40 +49,6 @@ export const OrdersTable = () => {
       order.customer?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       order.status?.toLowerCase().includes(searchQuery.toLowerCase())
   )
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Pending':
-        return 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100'
-      case 'Processing':
-        return 'bg-blue-100 text-blue-800 hover:bg-blue-100'
-      case 'Shipped':
-        return 'bg-purple-100 text-purple-800 hover:bg-purple-100'
-      case 'Delivered':
-        return 'bg-green-100 text-green-800 hover:bg-green-100'
-      case 'Cancelled':
-        return 'bg-red-100 text-red-800 hover:bg-red-100'
-      default:
-        return ''
-    }
-  }
-
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'Pending':
-        return 'Ожидает'
-      case 'Processing':
-        return 'Обрабатывается'
-      case 'Shipped':
-        return 'Отправлен'
-      case 'Delivered':
-        return 'Доставлен'
-      case 'Cancelled':
-        return 'Отменен'
-      default:
-        return status
-    }
-  }
 
   const handleViewDetails = (order: OrderType) => {
     setSelectedOrder(order)
@@ -109,8 +77,7 @@ export const OrdersTable = () => {
         )
       )
 
-      toast({
-        title: 'Статус обновлен',
+      toast.info('Статус обновлен', {
         description: `Статус заказа ${selectedOrder.orderNumber} изменен на ${getStatusText(newStatus)}`
       })
 
@@ -120,8 +87,7 @@ export const OrdersTable = () => {
 
   const downloadInvoice = () => {
     if (selectedOrder) {
-      toast({
-        title: 'Счет сгенерирован',
+      toast.info('Счет сгенерирован', {
         description: `Счет для заказа ${selectedOrder.orderNumber} успешно сгенерирован`
       })
       setIsInvoiceDialogOpen(false)
@@ -212,8 +178,7 @@ export const OrdersTable = () => {
                                   o.id === order.id ? { ...o, status: 'Cancelled' } : o
                                 )
                               )
-                              toast({
-                                title: 'Заказ отменен',
+                              toast.info('Заказ отменен', {
                                 description: `Заказ ${order.orderNumber} был отменен`
                               })
                             }}

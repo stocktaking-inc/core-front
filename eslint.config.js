@@ -13,7 +13,6 @@
 //     '*.config.js',
 //     '*.json',
 //     'components/ui/*',
-//     'hooks/use-toast.ts',
 //     'tailwind.config.ts'
 //   ],
 //   languageOptions: {

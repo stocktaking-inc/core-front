@@ -21,11 +21,11 @@ export const DeleteConfirmDialog = (props: IDeleteConfirmDialog) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Вы уверены?</AlertDialogTitle>
           <AlertDialogDescription>
-            Это действие нельзя отменить. Поставщик будет навсегда удален из системы.
+            Это действие нельзя отменить.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Отмена</AlertDialogCancel>
+          <AlertDialogCancel onClick={props.onClick}>Отмена</AlertDialogCancel>
           <AlertDialogAction
             onClick={props.onClick}
             className='bg-destructive text-destructive-foreground'

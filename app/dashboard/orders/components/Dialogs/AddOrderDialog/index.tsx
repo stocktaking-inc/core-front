@@ -22,7 +22,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { AddButton } from '@/app/dashboard/components/AddButton'
-import { toast } from '@/hooks/use-toast'
+import { toast } from 'sonner'
 
 export const AddOrderDialog = ({ onAddOrder }: AddOrderDialogProps) => {
   const [open, setOpen] = useState(false)
@@ -37,10 +37,8 @@ export const AddOrderDialog = ({ onAddOrder }: AddOrderDialogProps) => {
     const items = Number.parseInt(formData.get('items') as string)
 
     if (isNaN(total) || total < 0 || isNaN(items) || items < 0) {
-      toast({
-        title: 'Ошибка',
+      toast.warning('Ошибка', {
         description: 'Пожалуйста, введите корректные значения для суммы и количества товаров.',
-        variant: 'destructive'
       })
       setIsLoading(false)
       return
@@ -60,8 +58,7 @@ export const AddOrderDialog = ({ onAddOrder }: AddOrderDialogProps) => {
       if (onAddOrder) {
         onAddOrder(newOrder)
       }
-      toast({
-        title: 'Заказ добавлен',
+      toast.success('Заказ добавлен', {
         description: `Заказ ${newOrder.orderNumber} успешно добавлен.`
       })
       setIsLoading(false)

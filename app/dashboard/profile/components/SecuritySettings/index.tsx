@@ -6,12 +6,10 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
-import { toast } from '@/hooks/use-toast'
+import { toast } from 'sonner'
 
 export const SecuritySettings = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false)
 
   const handlePasswordChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -19,26 +17,13 @@ export const SecuritySettings = () => {
 
     setTimeout(() => {
       setIsLoading(false)
-      toast({
-        title: 'Пароль изменен',
+      toast.info('Пароль изменен', {
         description: 'Ваш пароль был успешно обновлен.'
       })
 
       const form = e.target as HTMLFormElement
       form.reset()
     }, 1000)
-  }
-
-  const handleTwoFactorToggle = () => {
-    setTwoFactorEnabled(!twoFactorEnabled)
-    toast({
-      title: twoFactorEnabled
-        ? 'Двухфакторная аутентификация отключена'
-        : 'Двухфакторная аутентификация включена',
-      description: twoFactorEnabled
-        ? 'Двухфакторная аутентификация была отключена для вашего аккаунта.'
-        : 'Двухфакторная аутентификация была включена для вашего аккаунта.'
-    })
   }
 
   return (
@@ -83,20 +68,6 @@ export const SecuritySettings = () => {
             {isLoading ? 'Сохранение...' : 'Изменить пароль'}
           </Button>
         </form>
-      </div>
-      <div className='border-t pt-6'>
-        <h3 className='text-lg font-medium'>Двухфакторная аутентификация</h3>
-        <p className='text-sm text-muted-foreground'>
-          Добавьте дополнительный уровень безопасности для вашего аккаунта.
-        </p>
-        <div className='mt-4 flex items-center space-x-2'>
-          <Switch
-            id='two-factor'
-            checked={twoFactorEnabled}
-            onCheckedChange={handleTwoFactorToggle}
-          />
-          <Label htmlFor='two-factor'>Включить двухфакторную аутентификацию</Label>
-        </div>
       </div>
       <div className='border-t pt-6'>
         <h3 className='text-lg font-medium text-destructive'>Опасная зона</h3>

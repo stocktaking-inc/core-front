@@ -58,15 +58,6 @@ export const UserNav = () => {
                 Профиль
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings className='mr-2 h-4 w-4' />
-              <Link
-                href='/dashboard/settings'
-                className='flex w-full'
-              >
-                Настройки
-              </Link>
-            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem>

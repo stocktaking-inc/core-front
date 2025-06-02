@@ -1,5 +1,5 @@
 interface IProductAnalytics {
-  productId: string
+  productId: number
   productName: string
   currentStock: number
   medianDemand: number

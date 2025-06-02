@@ -1,15 +1,16 @@
 interface InventoryItem {
-  id: string
+  id: number
   name: string
-  sku: string
+  article: string
   category: string
   quantity: number
-  location: string
-  status: 'In Stock' | 'Low Stock' | 'Out of Stock' | string
+  locationId: number | null,
+  status: 'In Stock' | 'Low Stock' | 'Out of Stock' | string,
+  supplierId: number
 }
 
 interface IInventoryTable {
-  items: InventoryItem[]
-  onDeleteItemAction: (id: string) => void
-  onEditItemAction: (updatedItem: InventoryItem) => void
+  items: InventoryItem[] | null
+  onDeleteItemAction: (id: number) => Promise<void>
+  onEditItemAction: (updatedItem: InventoryItem) => Promise<void>
 }

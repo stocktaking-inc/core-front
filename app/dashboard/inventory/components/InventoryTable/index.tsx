@@ -3,18 +3,10 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { Edit, Eye, MoreHorizontal, Search, Trash2 } from 'lucide-react'
+import { toast } from 'sonner'
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,71 +15,73 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
+import { Edit, Eye, MoreHorizontal, Search, Trash2 } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table'
 
-import { Card, CardContent } from '@/components/ui/card'
-import { toast } from '@/hooks/use-toast'
-
-import { EditInventoryDialog } from '../Dialogs/EditInventory'
-import { DeleteConfirmDialog } from '../Dialogs/DeleteConfirm'
+import { EditInventoryDialog } from '../Dialogs'
+import { DeleteConfirmDialog } from '@/components/Dialogs/DeleteConfirm'
 
 import { useMediaQuery } from '@/hooks/use-media-query'
+import { getStatusBadge } from '@/utils/Badges'
 
-import { getItemStatus, getStatusBadge } from '@/utils/Badges'
 
 export const InventoryTable = ({
-  items,
-  onDeleteItemAction,
-  onEditItemAction
-}: IInventoryTable) => {
-  const router = useRouter()
+                                 items,
+                                 onDeleteItemAction,
+                                 onEditItemAction
+                               }: IInventoryTable) => {
   const [searchQuery, setSearchQuery] = useState('')
-  const [deleteItemId, setDeleteItemId] = useState<string | null>(null)
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null)
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const isMobile = useMediaQuery('(max-width: 768px)')
+  const router = useRouter()
 
-  const filteredItems = items.filter(
+  const filteredItems = (items || []).filter(
     item =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.sku.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.article.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.category.toLowerCase().includes(searchQuery.toLowerCase())
   )
-
-  const handleView = (id: string) => {
-    router.push(`/dashboard/inventory/${id}`)
-  }
 
   const handleEdit = (item: InventoryItem) => {
     setSelectedItem(item)
     setIsEditDialogOpen(true)
   }
 
-  const handleDelete = (id: string) => {
-    setDeleteItemId(id)
+  const handleDelete = (item: InventoryItem) => {
+    setSelectedItem(item)
     setIsDeleteDialogOpen(true)
   }
 
   const confirmDelete = () => {
-    if (deleteItemId) {
-      onDeleteItemAction(deleteItemId)
-      toast({
-        title: 'Элемент удален',
+    if (selectedItem) {
+      onDeleteItemAction(selectedItem.id)
+      toast.info('Элемент удален', {
         description: 'Элемент инвентаря был успешно удален'
       })
+      setIsDeleteDialogOpen(false)
+      setSelectedItem(null)
     }
-    setIsDeleteDialogOpen(false)
-    setDeleteItemId(null)
   }
 
-  const handleSaveEdit = (updatedItem: InventoryItem) => {
-    const itemWithStatus = { ...updatedItem, status: getItemStatus(updatedItem.quantity) }
-    onEditItemAction(itemWithStatus)
-    toast({
-      title: 'Элемент обновлен',
-      description: `Элемент ${updatedItem.name} успешно обновлен.`
-    })
+  const handleView = (id: number) => {
+    router.push(`/dashboard/inventory/${id}`)
+  }
+
+  const handleSaveEdit = async (updatedItem: InventoryItem) => {
+    const itemWithStatus = { ...updatedItem }
+    await onEditItemAction(itemWithStatus)
     setIsEditDialogOpen(false)
+    setSelectedItem(null)
   }
 
   if (isMobile) {
@@ -109,20 +103,14 @@ export const InventoryTable = ({
               <div className='text-center py-8 text-muted-foreground'>Результаты не найдены.</div>
             ) : (
               filteredItems.map(item => (
-                <Card
-                  key={item.id}
-                  className='overflow-hidden'
-                >
+                <Card key={item.id} className='overflow-hidden'>
                   <CardContent className='p-0'>
                     <div className='p-4 border-b bg-muted/30'>
                       <div className='flex justify-between items-center'>
                         <h3 className='font-medium'>{item.name}</h3>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button
-                              variant='ghost'
-                              className='h-8 w-8 p-0'
-                            >
+                            <Button variant='ghost' className='h-8 w-8 p-0'>
                               <span className='sr-only'>Открыть меню</span>
                               <MoreHorizontal className='h-4 w-4' />
                             </Button>
@@ -138,7 +126,7 @@ export const InventoryTable = ({
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                               className='text-destructive'
-                              onClick={() => handleDelete(item.id)}
+                              onClick={() => handleDelete(item)}
                             >
                               <Trash2 className='mr-2 h-4 w-4' /> Удалить
                             </DropdownMenuItem>
@@ -150,7 +138,7 @@ export const InventoryTable = ({
                       <div className='grid grid-cols-2 gap-2'>
                         <div>
                           <p className='text-sm text-muted-foreground'>Артикул</p>
-                          <p>{item.sku}</p>
+                          <p>{item.article}</p>
                         </div>
                         <div>
                           <p className='text-sm text-muted-foreground'>Категория</p>
@@ -164,11 +152,11 @@ export const InventoryTable = ({
                       <div className='grid grid-cols-2 gap-2'>
                         <div>
                           <p className='text-sm text-muted-foreground'>Местоположение</p>
-                          <p>{item.location}</p>
+                          <p>{item.locationId}</p>
                         </div>
                         <div>
                           <p className='text-sm text-muted-foreground'>Статус</p>
-                          <div>{getStatusBadge(item.quantity)}</div>
+                          <div>item.quantity</div>
                         </div>
                       </div>
                     </div>
@@ -182,7 +170,7 @@ export const InventoryTable = ({
         <DeleteConfirmDialog
           open={isDeleteDialogOpen}
           onOpenChange={setIsDeleteDialogOpen}
-          onClick={() => setDeleteItemId(null)}
+          onClick={() => setSelectedItem(null)}
           onClick1={confirmDelete}
         />
 
@@ -238,11 +226,11 @@ export const InventoryTable = ({
                 filteredItems.map(item => (
                   <TableRow key={item.id}>
                     <TableCell className='font-medium'>{item.name}</TableCell>
-                    <TableCell>{item.sku}</TableCell>
+                    <TableCell>{item.article}</TableCell>
                     <TableCell>{item.category}</TableCell>
                     <TableCell className='text-right'>{item.quantity}</TableCell>
-                    <TableCell>{item.location}</TableCell>
-                    <TableCell>{getStatusBadge(item.quantity)}</TableCell>
+                    <TableCell>{item.locationId}</TableCell>
+                    <TableCell>{getStatusBadge(item.status)}</TableCell>
                     <TableCell className='text-right'>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -265,7 +253,7 @@ export const InventoryTable = ({
                           <DropdownMenuSeparator />
                           <DropdownMenuItem
                             className='text-destructive'
-                            onClick={() => handleDelete(item.id)}
+                            onClick={() => handleDelete(item)}
                           >
                             <Trash2 className='mr-2 h-4 w-4' /> Удалить
                           </DropdownMenuItem>
@@ -283,8 +271,8 @@ export const InventoryTable = ({
       <DeleteConfirmDialog
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
-        onClick={() => setDeleteItemId(null)}
-        onClick1={confirmDelete}
+        onClick={confirmDelete}
+        onClick1={() => {}}
       />
 
       <EditInventoryDialog

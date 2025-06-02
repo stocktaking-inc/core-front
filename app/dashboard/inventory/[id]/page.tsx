@@ -10,31 +10,9 @@ import { DashboardHeader } from '../../components/DashboardHeader'
 import { DashboardShell } from '../../components/Shell'
 import { ProductAnalytics } from '../components/ProductAnalytics'
 
-export default function InventoryDetailPage(params: IInventoryDetailPage) {
-  const item = {
-    id: params.id,
-    name: 'Wireless Headphones',
-    sku: 'WH-1001',
-    category: 'Electronics',
-    quantity: 23,
-    location: 'Warehouse A',
-    status: 'In Stock',
-    medianDemand: 2.5,
-    daysUntilDepletion: 9,
-    usageLevel: 'high' as const,
-    supplier: {
-      name: 'TechSupply Inc.',
-      contact: 'john@techsupply.com'
-    },
-    movementHistory: [
-      { date: '2023-05-01', type: 'Received', quantity: 50, balance: 50 },
-      { date: '2023-05-05', type: 'Sold', quantity: -10, balance: 40 },
-      { date: '2023-05-10', type: 'Sold', quantity: -8, balance: 32 },
-      { date: '2023-05-15', type: 'Sold', quantity: -5, balance: 27 },
-      { date: '2023-05-20', type: 'Sold', quantity: -4, balance: 23 }
-    ]
-  }
+import {item} from './mock'
 
+export default function InventoryDetailPage() {
   return (
     <DashboardShell>
       <div className='flex items-center gap-2'>
@@ -50,7 +28,7 @@ export default function InventoryDetailPage(params: IInventoryDetailPage) {
         </Button>
         <DashboardHeader
           heading={item.name}
-          text={`SKU: ${item.sku}`}
+          text={`SKU: ${item.article}`}
         >
           <div className='flex gap-2'>
             <Button variant='outline'>
@@ -76,7 +54,7 @@ export default function InventoryDetailPage(params: IInventoryDetailPage) {
               <div className='grid grid-cols-2 gap-4'>
                 <div>
                   <p className='text-sm font-medium text-muted-foreground'>SKU</p>
-                  <p>{item.sku}</p>
+                  <p>{item.article}</p>
                 </div>
                 <div>
                   <p className='text-sm font-medium text-muted-foreground'>Category</p>
@@ -88,7 +66,7 @@ export default function InventoryDetailPage(params: IInventoryDetailPage) {
                 </div>
                 <div>
                   <p className='text-sm font-medium text-muted-foreground'>Location</p>
-                  <p>{item.location}</p>
+                  <p>{item.locationId}</p>
                 </div>
                 <div>
                   <p className='text-sm font-medium text-muted-foreground'>Status</p>

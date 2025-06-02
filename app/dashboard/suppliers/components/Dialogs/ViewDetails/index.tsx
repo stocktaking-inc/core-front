@@ -52,7 +52,7 @@ export const ViewDetailsDialog = (props: IViewDetailsDialog) => {
             <div>
               <Label className='text-sm text-muted-foreground'>Статус</Label>
               <Badge
-                variant={props.selectedSupplier?.status === 'Active' ? 'default' : 'secondary'}
+                variant={props.selectedSupplier?.status === 'active' ? 'default' : 'secondary'}
               >
                 {props.statusText}
               </Badge>
