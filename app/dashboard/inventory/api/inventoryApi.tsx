@@ -7,9 +7,9 @@ export const fetchItems = async (signal: AbortSignal): Promise<InventoryItem[]> 
     const response = await fetch(`${BASE_BACKEND_URL}/items`, {
       method: 'GET',
       headers: {
-        Accept: 'application/json',
+        Accept: 'application/json'
       },
-      signal,
+      signal
     })
 
     if (!response.ok) {
@@ -28,15 +28,17 @@ export const fetchItems = async (signal: AbortSignal): Promise<InventoryItem[]> 
   }
 }
 
-export const addItem = async (newItem: Omit<InventoryItem, 'id' | 'status'>): Promise<InventoryItem> => {
+export const addItem = async (
+  newItem: Omit<InventoryItem, 'id' | 'status'>
+): Promise<InventoryItem> => {
   try {
     const response = await fetch(`${BASE_BACKEND_URL}/items`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Accept: 'application/json',
+        'Accept': 'application/json'
       },
-      body: JSON.stringify(newItem),
+      body: JSON.stringify(newItem)
     })
 
     if (!response.ok) {
@@ -57,8 +59,8 @@ export const deleteItem = async (id: number): Promise<void> => {
     const response = await fetch(`${BASE_BACKEND_URL}/items/${id}`, {
       method: 'DELETE',
       headers: {
-        Accept: 'application/json',
-      },
+        Accept: 'application/json'
+      }
     })
 
     if (!response.ok) {
@@ -78,7 +80,7 @@ export const editItem = async (updatedItem: InventoryItem): Promise<InventoryIte
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Accept: 'application/json',
+        'Accept': 'application/json'
       },
       body: JSON.stringify({
         name: updatedItem.name,
@@ -86,8 +88,8 @@ export const editItem = async (updatedItem: InventoryItem): Promise<InventoryIte
         category: updatedItem.category,
         quantity: updatedItem.quantity,
         locationId: updatedItem.locationId,
-        supplierId: updatedItem.supplierId,
-      }),
+        supplierId: updatedItem.supplierId
+      })
     })
 
     if (!response.ok) {
