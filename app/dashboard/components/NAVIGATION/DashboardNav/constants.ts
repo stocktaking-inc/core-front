@@ -1,4 +1,4 @@
-import { BarChart3, Box, ClipboardList, Home, ShoppingCart, Users, Warehouse  } from 'lucide-react'
+import { BarChart3, Box, ClipboardList, Home, ShoppingCart, Users, Warehouse } from 'lucide-react'
 
 export const NAV_ITEMS = [
   {

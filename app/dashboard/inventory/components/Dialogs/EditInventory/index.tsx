@@ -23,8 +23,8 @@ import {
 import { toast } from 'sonner'
 
 import { IEditInventoryDialog } from './types'
-import {ISupplier} from "@/app/dashboard/suppliers/types";
-import {BASE_BACKEND_URL} from "@/utils/shared/api/routes";
+import { ISupplier } from '@/app/dashboard/suppliers/types'
+import { BASE_BACKEND_URL } from '@/utils/shared/api/routes'
 
 export const EditInventoryDialog = ({
   item,

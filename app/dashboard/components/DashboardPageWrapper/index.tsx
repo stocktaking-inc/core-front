@@ -3,16 +3,23 @@ import { DashboardShell } from '../Shell'
 
 import { IDashboardPageWrapper } from './types'
 
-export const DashboardPageWrapper = (props: IDashboardPageWrapper) => {
+export const DashboardPageWrapper = ({
+  heading,
+  text,
+  action,
+  children,
+  userNav
+}: IDashboardPageWrapper) => {
   return (
     <DashboardShell>
       <DashboardHeader
-        heading={props.heading}
-        text={props.text}
+        heading={heading}
+        text={text}
       >
-        {props.action}
+        {action}
+        {userNav && <div className='user-nav'>{userNav}</div>}
       </DashboardHeader>
-      {props.children}
+      {children}
     </DashboardShell>
   )
 }

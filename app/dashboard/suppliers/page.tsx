@@ -21,7 +21,7 @@ export default function SuppliersPage() {
         setSuppliers(data)
       } catch (error: any) {
         toast.error('Ошибка', {
-          description: error.message,
+          description: error.message
         })
       } finally {
         setIsLoading(false)
@@ -36,11 +36,15 @@ export default function SuppliersPage() {
 
   return (
     <DashboardPageWrapper
-      heading="Поставщики"
-      text="Управление поставщиками продукции."
+      heading='Поставщики'
+      text='Управление поставщиками продукции.'
       action={<AddSupplierDialog onAddSupplier={handleAddSupplier} />}
     >
-      <SuppliersTable suppliers={suppliers} setSuppliers={setSuppliers} isLoading={isLoading} />
+      <SuppliersTable
+        suppliers={suppliers}
+        setSuppliersAction={setSuppliers}
+        isLoading={isLoading}
+      />
     </DashboardPageWrapper>
   )
 }

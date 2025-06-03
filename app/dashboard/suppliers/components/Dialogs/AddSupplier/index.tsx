@@ -11,7 +11,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -20,8 +20,8 @@ import { toast } from 'sonner'
 
 import { AddButton } from '../../../../components/AddButton'
 
-import { ISupplier} from '../../../types'
-import {IAddSupplierDialog} from './types'
+import { ISupplier } from '../../../types'
+import { IAddSupplierDialog } from './types'
 
 import { suppliersApi } from '../../../api'
 
@@ -40,19 +40,19 @@ export const AddSupplierDialog = ({ onAddSupplier }: IAddSupplierDialog) => {
       email: formData.get('email') as string,
       phone: formData.get('phone') as string,
       status: 'Active',
-      goods: [],
+      goods: []
     }
 
     try {
       const addedSupplier = await suppliersApi.addSupplier(newSupplier)
       onAddSupplier?.(addedSupplier)
       toast.success('Поставщик добавлен', {
-        description: `Поставщик ${addedSupplier.name} успешно добавлен.`,
+        description: `Поставщик ${addedSupplier.name} успешно добавлен.`
       })
       setOpen(false)
     } catch (error: any) {
       toast.error('Ошибка', {
-        description: error.message,
+        description: error.message
       })
     } finally {
       setIsLoading(false)
@@ -60,45 +60,70 @@ export const AddSupplierDialog = ({ onAddSupplier }: IAddSupplierDialog) => {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={setOpen}
+    >
       <DialogTrigger asChild>
-        <AddButton label="Добавить поставщика" />
+        <AddButton label='Добавить поставщика' />
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className='sm:max-w-[425px]'>
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Добавить поставщика</DialogTitle>
             <DialogDescription>Добавьте нового поставщика в систему.</DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Название</Label>
-              <Input id="name" name="name" placeholder="ООО Поставщик" required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="contact">Контактное лицо</Label>
-              <Input id="contact" name="contact" placeholder="Анна Петрова" required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+          <div className='grid gap-4 py-4'>
+            <div className='space-y-2'>
+              <Label htmlFor='name'>Название</Label>
               <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="supplier@example.com"
+                id='name'
+                name='name'
+                placeholder='ООО Поставщик'
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="phone">Телефон</Label>
-              <Input id="phone" name="phone" placeholder="+7 (999) 123-4567" required />
+            <div className='space-y-2'>
+              <Label htmlFor='contact'>Контактное лицо</Label>
+              <Input
+                id='contact'
+                name='contact'
+                placeholder='Анна Петрова'
+                required
+              />
+            </div>
+            <div className='space-y-2'>
+              <Label htmlFor='email'>Email</Label>
+              <Input
+                id='email'
+                name='email'
+                type='email'
+                placeholder='supplier@example.com'
+                required
+              />
+            </div>
+            <div className='space-y-2'>
+              <Label htmlFor='phone'>Телефон</Label>
+              <Input
+                id='phone'
+                name='phone'
+                placeholder='+7 (999) 123-4567'
+                required
+              />
             </div>
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+            <Button
+              type='button'
+              variant='outline'
+              onClick={() => setOpen(false)}
+            >
               Отмена
             </Button>
-            <Button type="submit" disabled={isLoading}>
+            <Button
+              type='submit'
+              disabled={isLoading}
+            >
               {isLoading ? 'Добавление...' : 'Добавить'}
             </Button>
           </DialogFooter>

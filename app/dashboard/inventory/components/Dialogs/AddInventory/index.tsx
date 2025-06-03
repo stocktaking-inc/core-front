@@ -23,8 +23,8 @@ import {
 import { AddButton } from '@/app/dashboard/components/AddButton'
 import { toast } from 'sonner'
 
-import {ISupplier} from "@/app/dashboard/suppliers/types";
-import {BASE_BACKEND_URL} from "@/utils/shared/api/routes";
+import { ISupplier } from '@/app/dashboard/suppliers/types'
+import { BASE_BACKEND_URL } from '@/utils/shared/api/routes'
 
 export const AddInventoryDialog: React.FC<IAddInventoryDialog> = ({ onAddItemAction }) => {
   const [open, setOpen] = useState(false)

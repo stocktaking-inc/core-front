@@ -5,4 +5,5 @@ export interface IDashboardPageWrapper {
   text: string
   action?: ReactNode
   children: ReactNode
+  userNav?: ReactNode
 }

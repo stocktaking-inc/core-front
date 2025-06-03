@@ -1,4 +1,4 @@
 interface IEditWarehouseDialog {
-  item: WarehouseItem;
-  onSaveAction: (updatedItem: WarehouseItem) => Promise<void>;
+  item: WarehouseItem
+  onSaveAction: (updatedItem: WarehouseItem) => Promise<void>
 }
