@@ -6,7 +6,7 @@ import { InventoryTable } from './components/InventoryTable'
 import { AddInventoryDialog } from './components/Dialogs/AddInventory'
 import { DashboardPageWrapper } from '../components/DashboardPageWrapper'
 
-import { fetchItems, addItem, deleteItem, editItem } from './api/inventoryApi'
+import { fetchItems, addItem, deleteItem, editItem } from './api'
 
 export default function InventoryPage() {
   const [items, setItems] = useState<InventoryItem[]>([])

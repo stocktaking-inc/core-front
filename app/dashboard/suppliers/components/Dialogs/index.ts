@@ -1,4 +1,4 @@
 export { AddSupplierDialog } from './AddSupplier'
-export { EditDialog } from './Edit'
+export { EditSupplierDialog } from './EditSupplier'
 export { ProductDialog } from './Product'
 export { ViewDetailsDialog } from './ViewDetails'

@@ -19,18 +19,12 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+
 import { toast } from 'sonner'
 
 import { IEditInventoryDialog } from './types'
-
-interface Warehouse {
-  id: number
-  name: string
-  address: string
-  isActive: boolean
-}
-
-import { ISupplier } from '@/app/dashboard/suppliers/components/types'
+import {ISupplier} from "@/app/dashboard/suppliers/types";
+import {BASE_BACKEND_URL} from "@/utils/shared/api/routes";
 
 export const EditInventoryDialog = ({
   item,
@@ -53,7 +47,7 @@ export const EditInventoryDialog = ({
   useEffect(() => {
     const fetchWarehouses = async () => {
       try {
-        const response = await fetch('http://localhost:5101/api/warehouses', {
+        const response = await fetch(`${BASE_BACKEND_URL}/warehouses`, {
           headers: { Accept: 'application/json' }
         })
         if (!response.ok) throw new Error('Ошибка загрузки складов')
@@ -68,7 +62,7 @@ export const EditInventoryDialog = ({
 
     const fetchSuppliers = async () => {
       try {
-        const response = await fetch('http://localhost:5101/api/suppliers', {
+        const response = await fetch(`${BASE_BACKEND_URL}/suppliers`, {
           headers: { Accept: 'application/json' }
         })
         if (!response.ok) throw new Error('Ошибка загрузки поставщиков')
@@ -120,7 +114,7 @@ export const EditInventoryDialog = ({
 
       const updatedItem: InventoryItem = {
         id: item.id,
-        status: item.status, // Сохраняем текущий статус, сервер обновит
+        status: item.status,
         ...formData
       }
 
@@ -242,8 +236,8 @@ export const EditInventoryDialog = ({
                 <SelectContent>
                   {suppliers.map(supplier => (
                     <SelectItem
-                      key={supplier.id}
-                      value={supplier.id.toString()}
+                      key={supplier.supplierId}
+                      value={supplier.supplierId.toString()}
                     >
                       {supplier.name}
                     </SelectItem>

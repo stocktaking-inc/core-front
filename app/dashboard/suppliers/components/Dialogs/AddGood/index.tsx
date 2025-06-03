@@ -18,14 +18,12 @@ import { Label } from '@/components/ui/label'
 
 import { toast } from 'sonner'
 
-import { AddButton } from '../../../../components/AddButton'
-
-import { ISupplier} from '../../../types'
-import {IAddSupplierDialog} from './types'
-
 import { suppliersApi } from '../../../api'
 
-export const AddSupplierDialog = ({ onAddSupplier }: IAddSupplierDialog) => {
+import {IGood} from "../../../types";
+import {IAddGoodDialog} from './types'
+
+export const AddGoodDialog = ({ supplierId, onAddGood }: IAddGoodDialog) => {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -34,20 +32,19 @@ export const AddSupplierDialog = ({ onAddSupplier }: IAddSupplierDialog) => {
     setIsLoading(true)
 
     const formData = new FormData(e.currentTarget)
-    const newSupplier: Partial<ISupplier> = {
+    const newGood: Partial<IGood> = {
       name: formData.get('name') as string,
-      contactPerson: formData.get('contact') as string,
-      email: formData.get('email') as string,
-      phone: formData.get('phone') as string,
-      status: 'Active',
-      goods: [],
+      article: formData.get('article') as string,
+      purchasePrice: parseFloat(formData.get('purchasePrice') as string),
+      category: formData.get('category') as string,
+      supplierId,
     }
 
     try {
-      const addedSupplier = await suppliersApi.addSupplier(newSupplier)
-      onAddSupplier?.(addedSupplier)
-      toast.success('Поставщик добавлен', {
-        description: `Поставщик ${addedSupplier.name} успешно добавлен.`,
+      const addedGood = await suppliersApi.addGood(supplierId, newGood)
+      onAddGood(addedGood)
+      toast.success('Товар добавлен', {
+        description: `Товар ${addedGood.name} успешно добавлен.`,
       })
       setOpen(false)
     } catch (error: any) {
@@ -62,36 +59,37 @@ export const AddSupplierDialog = ({ onAddSupplier }: IAddSupplierDialog) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <AddButton label="Добавить поставщика" />
+        <Button variant="outline">Добавить товар</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Добавить поставщика</DialogTitle>
-            <DialogDescription>Добавьте нового поставщика в систему.</DialogDescription>
+            <DialogTitle>Добавить товар</DialogTitle>
+            <DialogDescription>Добавьте новый товар для поставщика.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="name">Название</Label>
-              <Input id="name" name="name" placeholder="ООО Поставщик" required />
+              <Input id="name" name="name" placeholder="Товар" required />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="contact">Контактное лицо</Label>
-              <Input id="contact" name="contact" placeholder="Анна Петрова" required />
+              <Label htmlFor="article">Артикул</Label>
+              <Input id="article" name="article" placeholder="ART123" required />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="purchasePrice">Цена закупки</Label>
               <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="supplier@example.com"
+                id="purchasePrice"
+                name="purchasePrice"
+                type="number"
+                step="0.01"
+                placeholder="100.50"
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="phone">Телефон</Label>
-              <Input id="phone" name="phone" placeholder="+7 (999) 123-4567" required />
+              <Label htmlFor="category">Категория</Label>
+              <Input id="category" name="category" placeholder="Электроника" required />
             </div>
           </div>
           <DialogFooter>
