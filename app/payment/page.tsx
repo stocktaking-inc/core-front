@@ -154,7 +154,6 @@ const PaymentPage = () => {
       mutation.mutate(dataToSend)
     } catch (error) {
       if (error instanceof z.ZodError) {
-        console.log('Zod validation errors:', error.errors)
         const fieldErrors: Partial<Record<keyof FormData, string>> = {}
         error.errors.forEach(err => {
           if (err.path[0]) {

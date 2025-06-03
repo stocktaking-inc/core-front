@@ -22,14 +22,9 @@ import {
 } from '@/components/ui/select'
 import { AddButton } from '@/app/dashboard/components/AddButton'
 import { toast } from 'sonner'
-import { ISupplier } from '@/app/dashboard/suppliers/components/types'
 
-interface Warehouse {
-  id: number
-  name: string
-  address: string
-  isActive: boolean
-}
+import {ISupplier} from "@/app/dashboard/suppliers/types";
+import {BASE_BACKEND_URL} from "@/utils/shared/api/routes";
 
 export const AddInventoryDialog: React.FC<IAddInventoryDialog> = ({ onAddItemAction }) => {
   const [open, setOpen] = useState(false)
@@ -48,7 +43,7 @@ export const AddInventoryDialog: React.FC<IAddInventoryDialog> = ({ onAddItemAct
   useEffect(() => {
     const fetchWarehouses = async () => {
       try {
-        const response = await fetch('http://localhost:5101/api/warehouses', {
+        const response = await fetch(`${BASE_BACKEND_URL}/warehouses`, {
           headers: { Accept: 'application/json' }
         })
         if (!response.ok) throw new Error('Ошибка загрузки складов')
@@ -63,7 +58,7 @@ export const AddInventoryDialog: React.FC<IAddInventoryDialog> = ({ onAddItemAct
 
     const fetchSuppliers = async () => {
       try {
-        const response = await fetch('http://localhost:5101/api/suppliers', {
+        const response = await fetch(`${BASE_BACKEND_URL}/suppliers`, {
           headers: { Accept: 'application/json' }
         })
         if (!response.ok) throw new Error('Ошибка загрузки поставщиков')
@@ -208,8 +203,8 @@ export const AddInventoryDialog: React.FC<IAddInventoryDialog> = ({ onAddItemAct
                 <SelectContent>
                   {suppliers.map(supplier => (
                     <SelectItem
-                      key={supplier.id}
-                      value={supplier.id.toString()}
+                      key={supplier.supplierId}
+                      value={supplier.supplierId.toString()}
                     >
                       {supplier.name}
                     </SelectItem>

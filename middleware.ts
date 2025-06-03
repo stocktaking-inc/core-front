@@ -35,7 +35,6 @@ export async function middleware(request: NextRequest) {
   //   })
   //
   //   if (verifyResponse.ok) {
-  //     console.log('Verify successful, proceeding')
   //     return NextResponse.next()
   //   }
   //
@@ -49,7 +48,6 @@ export async function middleware(request: NextRequest) {
   //
   //   const setCookieHeader = refreshResponse.headers.get('set-cookie')
   //   if (setCookieHeader) {
-  //     console.log('AccessToken updated via Set-Cookie')
   //     const response = NextResponse.next()
   //     response.headers.set('set-cookie', setCookieHeader)
   //     return response

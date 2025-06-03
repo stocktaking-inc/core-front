@@ -1,4 +1,4 @@
-import { BarChart3, Box, ClipboardList, Home, Settings, ShoppingCart, Users } from 'lucide-react'
+import { BarChart3, Box, ClipboardList, Home, ShoppingCart, Users, Warehouse  } from 'lucide-react'
 
 export const NAV_ITEMS = [
   {
@@ -20,6 +20,11 @@ export const NAV_ITEMS = [
     title: 'Поставщики',
     href: '/dashboard/suppliers',
     icon: ClipboardList
+  },
+  {
+    title: 'Склады',
+    href: '/dashboard/warehouses',
+    icon: Warehouse
   },
   {
     title: 'Клиенты',
