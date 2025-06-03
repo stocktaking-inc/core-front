@@ -58,19 +58,19 @@ export const UserProfile = () => {
       try {
         const response = await fetch('https://localhost:8443/api/auth/me', {
           method: 'GET',
-          credentials: 'include',
+          credentials: 'include'
         })
 
         if (response.status === 401) {
           const refreshResponse = await fetch('https://localhost:8443/api/auth/refresh', {
             method: 'POST',
-            credentials: 'include',
+            credentials: 'include'
           })
 
           if (refreshResponse.ok) {
             const retryResponse = await fetch('http://localhost:5100/api/auth/me', {
               method: 'GET',
-              credentials: 'include',
+              credentials: 'include'
             })
             if (retryResponse.ok) {
               const data = await retryResponse.json()
@@ -87,7 +87,6 @@ export const UserProfile = () => {
             }
           } else {
             toast.error('Сессия истекла')
-
           }
         } else if (response.ok) {
           const data = await response.json()
@@ -144,7 +143,7 @@ export const UserProfile = () => {
       if (response.status === 401) {
         const refreshResponse = await fetch('http://localhost:5100/api/auth/refresh', {
           method: 'POST',
-          credentials: 'include',
+          credentials: 'include'
         })
 
         if (refreshResponse.ok) {
@@ -189,16 +188,25 @@ export const UserProfile = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className='space-y-6'>
+    <form
+      onSubmit={handleSubmit}
+      className='space-y-6'
+    >
       <div className='flex flex-col gap-6 sm:flex-row'>
         <div className='flex flex-col items-center gap-4'>
           <Avatar className='h-24 w-24'>
-            <AvatarImage src='/placeholder.svg?height=96&width=96' alt={formData.name} />
+            <AvatarImage
+              src='/placeholder.svg?height=96&width=96'
+              alt={formData.name}
+            />
             <AvatarFallback>
               {formData.name ? formData.name.slice(0, 2).toUpperCase() : 'ИС'}
             </AvatarFallback>
           </Avatar>
-          <Button variant='outline' size='sm'>
+          <Button
+            variant='outline'
+            size='sm'
+          >
             Изменить фото
           </Button>
         </div>
@@ -206,26 +214,47 @@ export const UserProfile = () => {
           <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
             <div className='space-y-2'>
               <Label htmlFor='name'>Полное имя</Label>
-              <Input id='name' value={formData.name} onChange={handleChange} />
+              <Input
+                id='name'
+                value={formData.name}
+                onChange={handleChange}
+              />
             </div>
             <div className='space-y-2'>
               <Label htmlFor='email'>Email</Label>
-              <Input id='email' type='email' value={formData.email} onChange={handleChange} />
+              <Input
+                id='email'
+                type='email'
+                value={formData.email}
+                onChange={handleChange}
+              />
             </div>
           </div>
           <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
             <div className='space-y-2'>
               <Label htmlFor='phone'>Телефон</Label>
-              <Input id='phone' value={formData.phone} onChange={handleChange} />
+              <Input
+                id='phone'
+                value={formData.phone}
+                onChange={handleChange}
+              />
             </div>
             <div className='space-y-2'>
               <Label htmlFor='company'>Компания</Label>
-              <Input id='company' value={formData.company} onChange={handleChange} />
+              <Input
+                id='company'
+                value={formData.company}
+                onChange={handleChange}
+              />
             </div>
           </div>
           <div className='space-y-2'>
             <Label htmlFor='position'>Должность</Label>
-            <Input id='position' value={formData.position} onChange={handleChange} />
+            <Input
+              id='position'
+              value={formData.position}
+              onChange={handleChange}
+            />
           </div>
           <div className='space-y-2'>
             <Label htmlFor='bio'>О себе</Label>
@@ -239,7 +268,10 @@ export const UserProfile = () => {
         </div>
       </div>
       <div className='flex justify-end'>
-        <Button type='submit' disabled={isLoading}>
+        <Button
+          type='submit'
+          disabled={isLoading}
+        >
           {isLoading ? 'Сохранение...' : 'Сохранить изменения'}
         </Button>
       </div>

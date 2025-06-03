@@ -3,7 +3,13 @@ import { DashboardShell } from '../Shell'
 
 import { IDashboardPageWrapper } from './types'
 
-export const DashboardPageWrapper = ({ heading, text, action, children, userNav }: IDashboardPageWrapper) => {
+export const DashboardPageWrapper = ({
+  heading,
+  text,
+  action,
+  children,
+  userNav
+}: IDashboardPageWrapper) => {
   return (
     <DashboardShell>
       <DashboardHeader
