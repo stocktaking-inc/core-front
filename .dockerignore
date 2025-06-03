@@ -16,3 +16,5 @@ node_modules/
 eslint.config.js
 lefthook.yml
 CHANGELOG.md
+Dockerfile
+
