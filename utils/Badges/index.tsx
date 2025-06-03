@@ -16,13 +16,13 @@ export const getStatusBadge = (status: string) => {
       return <Badge variant='destructive'>{status}</Badge>
     case 'Active':
       return (
-        <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+        <Badge className='bg-green-100 text-green-800 hover:bg-green-100'>
           {getStatusText(status)}
         </Badge>
       )
     case 'Inactive':
       return (
-        <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100">
+        <Badge className='bg-gray-100 text-gray-800 hover:bg-gray-100'>
           {getStatusText(status)}
         </Badge>
       )

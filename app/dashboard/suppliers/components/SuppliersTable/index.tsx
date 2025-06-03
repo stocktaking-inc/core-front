@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import {
@@ -20,7 +20,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
+  TableRow
 } from '@/components/ui/table'
 
 import { toast } from 'sonner'
@@ -86,14 +86,12 @@ export const SuppliersTable = ({ suppliers, setSuppliersAction, isLoading }: ISu
   }
 
   const saveEditedSupplier = async (updatedSupplier: ISupplier) => {
-    if (!selectedSupplier) return;
+    if (!selectedSupplier) return
 
     try {
       await suppliersApi.updateSupplier(selectedSupplier.supplierId, updatedSupplier)
       setSuppliersAction(
-        suppliers.map(s =>
-          s.supplierId === selectedSupplier.supplierId ? updatedSupplier : s
-        )
+        suppliers.map(s => (s.supplierId === selectedSupplier.supplierId ? updatedSupplier : s))
       )
       toast.success('Поставщик обновлен', {
         description: `Информация о поставщике ${updatedSupplier.name} была успешно обновлена`
@@ -136,13 +134,19 @@ export const SuppliersTable = ({ suppliers, setSuppliersAction, isLoading }: ISu
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={7} className='h-24 text-center'>
+                <TableCell
+                  colSpan={7}
+                  className='h-24 text-center'
+                >
                   Загрузка...
                 </TableCell>
               </TableRow>
             ) : filteredSuppliers.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className='h-24 text-center'>
+                <TableCell
+                  colSpan={7}
+                  className='h-24 text-center'
+                >
                   Результаты не найдены.
                 </TableCell>
               </TableRow>
@@ -158,7 +162,10 @@ export const SuppliersTable = ({ suppliers, setSuppliersAction, isLoading }: ISu
                   <TableCell className='text-right'>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant='ghost' className='h-8 w-8 p-0'>
+                        <Button
+                          variant='ghost'
+                          className='h-8 w-8 p-0'
+                        >
                           <span className='sr-only'>Открыть меню</span>
                           <MoreHorizontal className='h-4 w-4' />
                         </Button>

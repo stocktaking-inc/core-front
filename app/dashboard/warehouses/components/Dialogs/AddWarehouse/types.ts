@@ -1,3 +1,3 @@
 interface AddWarehouseDialogProps {
-  onAddItemAction: (newItem: Omit<WarehouseItem, 'id'>) => Promise<void>;
+  onAddItemAction: (newItem: Omit<WarehouseItem, 'id'>) => Promise<void>
 }

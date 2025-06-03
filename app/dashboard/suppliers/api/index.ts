@@ -30,8 +30,8 @@ export const suppliersApi = {
         contactPerson: supplier.contactPerson,
         email: supplier.email,
         phone: supplier.phone,
-        status: supplier.status || 'Active',
-      }),
+        status: supplier.status || 'Active'
+      })
     })
     await handleApiError(response, 'Ошибка при добавлении поставщика')
     return response.json()
@@ -46,15 +46,15 @@ export const suppliersApi = {
         contactPerson: supplier.contactPerson,
         email: supplier.email,
         phone: supplier.phone,
-        status: supplier.status,
-      }),
+        status: supplier.status
+      })
     })
     await handleApiError(response, 'Ошибка при обновлении поставщика')
   },
 
   deleteSupplier: async (id: number): Promise<void> => {
     const response = await fetch(`${BASE_BACKEND_URL}/suppliers/${id}`, {
-      method: 'DELETE',
+      method: 'DELETE'
     })
     await handleApiError(response, 'Ошибка при удалении поставщика')
   },
@@ -68,8 +68,8 @@ export const suppliersApi = {
         article: good.article,
         purchasePrice: good.purchasePrice,
         category: good.category,
-        supplierId,
-      }),
+        supplierId
+      })
     })
     await handleApiError(response, 'Ошибка при добавлении товара')
     return response.json()
@@ -79,5 +79,5 @@ export const suppliersApi = {
     const response = await fetch(`${BASE_BACKEND_URL}/suppliers/goods/${id}`)
     await handleApiError(response, 'Товар не найден')
     return response.json()
-  },
+  }
 }

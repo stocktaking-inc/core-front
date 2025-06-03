@@ -1,6 +1,6 @@
-import type React from "react";
+import type React from 'react'
 
-import {ISupplier} from "../../types";
+import { ISupplier } from '../../types'
 
 export interface ISuppliersTable {
   suppliers: ISupplier[]
